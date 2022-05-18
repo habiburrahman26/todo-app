@@ -26,10 +26,10 @@ const Navbar = () => {
     </li>
     <li>
       <NavLink
-        to="/createTask"
+        to="/addTask"
         className={({ isActive }) => (isActive ? 'bg-accent text-white' : '')}
       >
-        Create Task
+        Add Task
       </NavLink>
     </li>
     <li>
@@ -64,7 +64,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 shadow">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex="0" className="btn btn-ghost lg:hidden">
@@ -91,7 +91,7 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost normal-case text-xl">
-          Doctor portals
+          TODO-APP
         </Link>
       </div>
       <div className="navbar-end">
