@@ -4,6 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
 import auth from '../../../firebase.init';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
+import TaskRow from './TaskRow';
 
 const MyTask = () => {
   const [user, loading] = useAuthState(auth);
@@ -29,24 +30,9 @@ const MyTask = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Blue</td>
-          </tr>
-          <tr>
-            <th>2</th>
-            <td>Hart Hagerty</td>
-            <td>Desktop Support Technician</td>
-            <td>Purple</td>
-          </tr>
-          <tr>
-            <th>3</th>
-            <td>Brice Swyre</td>
-            <td>Tax Accountant</td>
-            <td>Red</td>
-          </tr>
+          {data?.data?.map((task, i) => (
+            <TaskRow key={task._id} sl={i + 1} {...task} />
+          ))}
         </tbody>
       </table>
     </div>
