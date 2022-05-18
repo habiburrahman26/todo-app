@@ -8,7 +8,6 @@ import {
 import auth from '../../../firebase.init';
 import { useForm } from 'react-hook-form';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
-import useToken from '../../../hooks/useToken';
 
 const Registration = () => {
   const {
@@ -21,14 +20,13 @@ const Registration = () => {
     useCreateUserWithEmailAndPassword(auth);
   const [updateProfile, updating] = useUpdateProfile(auth);
 
-  const [token] = useToken(user || gUser);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      navigate('/appoinemnt', { replace: true });
+    if (user || gUser) {
+      navigate('/', { replace: true });
     }
-  }, [token, navigate]);
+  }, [user, gUser, navigate]);
 
   if (loading || gLoading || updating) {
     return <LoadingSpinner />;

@@ -7,7 +7,6 @@ import {
 import auth from '../../../firebase.init';
 import { useForm } from 'react-hook-form';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
-import useToken from '../../../hooks/useToken';
 
 const Login = () => {
   const {
@@ -19,18 +18,16 @@ const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
-  const [token] = useToken(user || gUser);
-
   const location = useLocation();
   const navigate = useNavigate();
 
   let from = location?.state?.from?.pathname || '/';
 
   useEffect(() => {
-    if (token) {
+    if (user||gUser) {
       navigate(from, { replace: true });
     }
-  }, [token, navigate, from]);
+  }, [user,gUser, navigate, from]);
 
   if (loading || gLoading) {
     return <LoadingSpinner />;
@@ -127,8 +124,8 @@ const Login = () => {
         </button>
       </form>
       <p className="text-center mt-4 mb-4">
-        New to doctor portal?{' '}
-        <Link to="/register" className="text-secondary">
+        New to todo-app?{' '}
+        <Link to="/signup" className="text-secondary">
           Create account
         </Link>
       </p>
