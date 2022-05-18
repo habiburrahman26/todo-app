@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   useCreateUserWithEmailAndPassword,
-  useSignInWithGoogle,
   useUpdateProfile,
 } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
@@ -15,7 +14,6 @@ const Registration = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
   const [updateProfile, updating] = useUpdateProfile(auth);
@@ -23,19 +21,19 @@ const Registration = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user || gUser) {
+    if (user) {
       navigate('/', { replace: true });
     }
-  }, [user, gUser, navigate]);
+  }, [user, navigate]);
 
-  if (loading || gLoading || updating) {
+  if (loading || updating) {
     return <LoadingSpinner />;
   }
 
   let signInError;
-  if (error || gError) {
+  if (error ) {
     signInError = (
-      <p className="text-red-500">{error?.message || gError?.message}</p>
+      <p className="text-red-500">{error?.message}</p>
     );
   }
 
@@ -140,7 +138,7 @@ const Registration = () => {
         {signInError}
 
         <button className="btn bg-accent text-white mt-4 w-full max-w-sm">
-          Submit
+          Sign Up
         </button>
       </form>
       <p className="text-center mt-4 mb-4">
@@ -149,15 +147,6 @@ const Registration = () => {
           Login here
         </Link>
       </p>
-      <div className="divider">OR</div>
-      <div className="text-center mt-8">
-        <button
-          className="btn btn-outline uppercase"
-          onClick={() => signInWithGoogle()}
-        >
-          continue with google
-        </button>
-      </div>
     </div>
   );
 };

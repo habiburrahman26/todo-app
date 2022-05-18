@@ -1,12 +1,13 @@
 import { signOut } from 'firebase/auth';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const location= useLocation();
 
   const logout = () => {
     signOut(auth);
@@ -15,37 +16,51 @@ const Navbar = () => {
 
   const menuItems = (
     <>
+    <li>
+      <NavLink
+        to={location.pathname === '/home' ? '/home' : '/'}
+        className={({ isActive }) => (isActive ? 'bg-accent text-white' : '')}
+      >
+        Home
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to="/createTask"
+        className={({ isActive }) => (isActive ? 'bg-accent text-white' : '')}
+      >
+        Create Task
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to="/myTask"
+        className={({ isActive }) => (isActive ? 'bg-accent text-white' : '')}
+      >
+        My Tasks
+      </NavLink>
+    </li>
+    {!user && (
       <li>
-        <Link to="/home">Home</Link>
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? 'bg-accent text-white' : ''
+          }
+        >
+          Login
+        </NavLink>
       </li>
+    )}
+    
+    {user && (
       <li>
-        <Link to="/appoinment">Appoinment</Link>
+        <button className="btn btn-outline btn-primary" onClick={logout}>
+          Sign Out
+        </button>
       </li>
-      <li>
-        <Link to="/about">About</Link>
-      </li>
-      <li>
-        <Link to="/reviews">Reviews</Link>
-      </li>
-      <li>
-        <Link to="/contactus">Contact Us</Link>
-      </li>
-      {user && (
-        <li>
-          <Link to="/dashboard">Dashboard</Link>
-        </li>
-      )}
-      {user && (
-        <li>
-          <button onClick={logout}>Sign Out</button>
-        </li>
-      )}
-      {!user && (
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-      )}
-    </>
+    )}
+  </>
   );
 
   return (

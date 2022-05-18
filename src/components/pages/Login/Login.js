@@ -14,7 +14,6 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
@@ -24,20 +23,18 @@ const Login = () => {
   let from = location?.state?.from?.pathname || '/';
 
   useEffect(() => {
-    if (user||gUser) {
+    if (user) {
       navigate(from, { replace: true });
     }
-  }, [user,gUser, navigate, from]);
+  }, [user, navigate, from]);
 
-  if (loading || gLoading) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
   let signInError;
-  if (error || gError) {
-    signInError = (
-      <p className="text-red-500">{error?.message || gError?.message}</p>
-    );
+  if (error) {
+    signInError = <p className="text-red-500">{error?.message}</p>;
   }
 
   const onSubmit = (data) => {
@@ -120,7 +117,7 @@ const Login = () => {
         {signInError}
 
         <button className="btn bg-accent text-white mt-4 w-full max-w-sm">
-          Submit
+          Login
         </button>
       </form>
       <p className="text-center mt-4 mb-4">
@@ -129,15 +126,6 @@ const Login = () => {
           Create account
         </Link>
       </p>
-      <div className="divider">OR</div>
-      <div className="text-center mt-8">
-        <button
-          className="btn btn-outline uppercase"
-          onClick={() => signInWithGoogle()}
-        >
-          continue with google
-        </button>
-      </div>
     </div>
   );
 };
