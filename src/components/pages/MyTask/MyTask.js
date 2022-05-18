@@ -9,7 +9,7 @@ import TaskRow from './TaskRow';
 const MyTask = () => {
   const [user, loading] = useAuthState(auth);
 
-  const { data, isLoading } = useQuery(['task-list', user], () =>
+  const { data, isLoading,refetch } = useQuery(['task-list', user], () =>
     axios.get(`http://localhost:5000/task/${user.email}`)
   );
 
@@ -31,7 +31,7 @@ const MyTask = () => {
         </thead>
         <tbody>
           {data?.data?.map((task, i) => (
-            <TaskRow key={task._id} sl={i + 1} {...task} />
+            <TaskRow key={task._id} sl={i + 1} {...task} refetch={refetch}/>
           ))}
         </tbody>
       </table>
